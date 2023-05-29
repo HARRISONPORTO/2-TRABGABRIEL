@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cálculo de Índice de Adiposidade Corporal (IAC)</title>
+    <link rel="stylesheet" href="estilo.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+   
+</head>
+<body class="p-6">
+    
+<h1 class="has-text-info has-background-dark has-text-centered is-size-5" >Cálculo de Índice de Adiposidade Corporal (IAC)</h1>
+  
+<p class="has-text-centered ">Altura (em metros):</p>
+    <input class="input is-info input is-small has-text-centered" type="text" id="altura"><br>
+   <p class="has-text-centered " for="quadril">Circunferência do quadril (em centímetros):</p> 
+  <input class="input is-info input is-small has-text-centered" type="text" id="quadril"><br>
+     <br>
+     <div class="has-text-centered ">
+  <p>  <button class="button is-info button is-primary" id="calcular">Calcular</button> </p>
+     </div>  
+
+    <div id="resultado"> </div>
+    <br>
+    <div class="has-text-centered ">
+        <button class="button is-info button is-primary has-text-justified" id="exibir-resultados">Exibir Resultados</button>
+    </div>
+    
+    <ul id="resultados"></ul>
+    
+    <script>
+    $(document).ready(function() {
+            var resultados = [];
+            $("#calcular").click(function() {
+                var altura = parseFloat($("#altura").val());
+                var quadril = parseFloat($("#quadril").val());
+
+                if (!isNaN(altura) && !isNaN(quadril)) { 
+                    var iac = (quadril / (altura * Math.sqrt(altura))) - 18;
+
+                    var categoria = "";
+                    if (iac < 8) {
+                        categoria = "Muito magro";
+                    } else if (iac < 21) {
+                        categoria = "Magro";
+                    } else if (iac < 25) {
+                        categoria = "Normal";
+                    } else if (iac < 29) {
+                        categoria = "Sobrepeso";
+                    } else if (iac < 35) {
+                        categoria = "Obeso";
+                    } else {
+                        categoria = "Muito obeso";
+                    }
+
+                    resultados.push({
+                        altura: altura,
+                        quadril: quadril,
+                        iac: iac,
+                        categoria: categoria
+                    });
+
+                    $("#resultado").text("Categoria: " + categoria);
+
+            
+                    $("#altura").val("");
+                    $("#quadril").val("");
+                }
+            });
+
+            $("#exibir-resultados").click(function() {
+                $("#resultados").empty();
+                for (var i = 0; i < resultados.length; i++) {
+                    $("#resultados").append("<li>Altura: " + resultados[i].altura + ", Quadril: " + resultados[i].quadril + ", IAC: " + resultados[i].iac + ", Categoria: " + resultados[i].categoria + "</li>");
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
+
